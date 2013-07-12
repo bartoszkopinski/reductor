@@ -6,6 +6,10 @@ class Reductor
         @options[:field] || 'created_at'
       end
 
+      def extra_fields
+        [@options[:group_by]].flatten
+      end
+
       def map
         %Q{
           function() {
@@ -14,9 +18,18 @@ class Reductor
             } else {
               date = null;
             }
-            emit(date , 1);
+            #{emit}
           }
         }
+      end
+
+      def emit
+        if extra_fields
+          fields = extra_fields.map{|e| "#{e}: this.#{e}" }.join(", ")
+          "emit({ date: date, #{fields} }, 1)"
+        else
+          "emit(date , 1);"
+        end
       end
 
       def reduce
