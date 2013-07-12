@@ -1,9 +1,9 @@
 module Mongoid
   class Criteria
 
-    def reduction(reduction_type, out: :inline, options: {})
+    def reduction(reduction_type, options = {})
       reductor = Reductor.new(self, reduction_type, options)
-      Hash[reductor.reduce.out(inline: true).map{|e| [e['_id'], e["value"]] }]
+      Hash[reductor.reduce.map{|e| [e['_id'], e["value"]] }]
     end
 
   end
@@ -21,7 +21,11 @@ class Reductor
 
   def reduce
     self.extend reduction_module
-    @collection.map_reduce(map, reduce)
+    @collection.map_reduce(map, reduce).out(out)
+  end
+
+  def out
+    @options[:out] || { inline: true }
   end
 
   def reduction_module

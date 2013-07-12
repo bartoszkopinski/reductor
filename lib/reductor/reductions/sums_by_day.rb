@@ -1,9 +1,13 @@
 class Reductor
   module Reductions
-    module CountsByDay
+    module SumsByDay
 
       def datetime_field
         @options[:field] || 'created_at'
+      end
+
+      def value_field
+        @options[:value_field] || 'count'
       end
 
       def map
@@ -14,7 +18,7 @@ class Reductor
             } else {
               date = null;
             }
-            emit(date , 1);
+            emit(date , this.#{value_field});
           }
         }
       end
