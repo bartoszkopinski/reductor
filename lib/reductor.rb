@@ -10,8 +10,8 @@ module Mongoid
 end
 
 require 'reductor/reductions'
-require 'reductor/field'
-require 'reductor/translated_field'
+require 'reductor/simple_field'
+require 'reductor/converted_field'
 
 class Reductor
 
@@ -26,11 +26,11 @@ class Reductor
   def by(*fields)
     self.fields = fields.map do |f|
       if f.is_a?(Hash)
-        f.map{ |k,v| Reductor::TranslatedField.new(k, v) }
+        f.map{ |k,v| Reductor::ConvertedField.new(k, v) }
       else
-        Reductor::Field.new(f)
+        Reductor::SimpleField.new(f)
       end
-    end
+    end.flatten
   end
 
   def map
@@ -44,11 +44,11 @@ class Reductor
   def reduct
     self.extend reduction_module
     instance_eval &block
-    @collection.map_reduce(map, reduce).out(out)
+    @collection.map_reduce(map, reduce).out(@out || { inline: true })
   end
 
-  def out
-    { inline: true }
+  def out arg
+    @out = arg
   end
 
   def reduction_module

@@ -4,18 +4,18 @@ class Reductor
 
       def emit
         if fields.size > 1
-          "emit({ #{fields.join(", ")} } , #{translated_value});"
+          "emit({ #{fields.join(", ")} } , #{translated_sum_field});"
         else
-          "emit( #{fields.first} , #{translated_value});"
+          "emit( #{fields.first.translated} , #{translated_sum_field});"
         end
       end
 
-      def translated_value
-        "this.#{@value}"
+      def translated_sum_field
+        "this.#{@sum_field}"
       end
 
-      def value arg
-        @value =  arg
+      def sum arg
+        @sum_field =  arg
       end
 
       def reduce
