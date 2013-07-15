@@ -44,7 +44,7 @@ class Reductor
   def reduct
     self.extend reduction_module
     instance_eval &block
-    @collection.map_reduce(map, reduce).out(@out || { inline: true })
+    @collection.map_reduce(map, reduce).finalize(finalize).out(@out || { inline: true })
   end
 
   def out arg

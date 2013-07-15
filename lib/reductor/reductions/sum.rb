@@ -14,14 +14,23 @@ class Reductor
         "this.#{@sum_field}"
       end
 
-      def sum arg
-        @sum_field =  arg
+      def sum field, options = {}
+        @sum_field = field
+        @sum_field_name = options[:as] || @sum_field
       end
 
       def reduce
         %Q{
           function(key, values) {
             return Array.sum(values);
+          }
+        }
+      end
+
+      def finalize
+        %Q{
+          function(key, values) {
+            return { #{@sum_field_name}: values };
           }
         }
       end

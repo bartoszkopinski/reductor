@@ -10,10 +10,27 @@ class Reductor
         end
       end
 
+      def count options
+        @as = options[:as]
+      end
+
+      def value_field_name
+        @as || 'count';
+      end
+
       def reduce
         %Q{
           function(key, values) {
             return Array.sum(values);
+          }
+        }
+      end
+
+
+      def finalize
+        %Q{
+          function(key, values) {
+            return { #{value_field_name}: values };
           }
         }
       end
