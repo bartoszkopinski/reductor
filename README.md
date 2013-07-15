@@ -5,7 +5,10 @@ Collection of common map_reduce operations, implemented with mongoid.
 ## Basic sample:
 
 ```
-pry(main)> Project.all.reduction(:counts_by_day)
+pry(main)>Project.all.reduct :sum do
+pry(main)>  by :project_id, { created_at: :by_day }
+pry(main)>  value :duration
+pry(main)>end
 => {
                         nil => 12.0,
     2012-05-10 22:00:00 UTC => 1.0,
