@@ -4,7 +4,7 @@ class Reductor
 
       def emit
         if fields.size > 1
-          "emit({#{fields.join(", ") }, 1);"
+          "emit({#{fields.join(", ")}}, 1);"
         else
           "emit(#{fields.first.translated}, 1);"
         end
