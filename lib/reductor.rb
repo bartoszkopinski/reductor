@@ -23,8 +23,8 @@ class Reductor
     self.block = block
   end
 
-  def by(*fields)
-    self.fields = fields.map do |f|
+  def keys(*keys)
+    self.fields = keys.map do |f|
       if f.is_a?(Hash)
         f.map{ |k,v| Reductor::ConvertedField.new(k, v) }
       else
