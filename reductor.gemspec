@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name        = 'reductor'
-  s.version     = '0.0.1'
+  s.version     = '0.0.2'
   s.date        = '2013-07-12'
   s.summary     = "Map-reduce with ease."
   s.description = "Collection of common map_reduce operations, implemented with mongoid."
