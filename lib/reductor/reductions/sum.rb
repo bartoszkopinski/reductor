@@ -4,9 +4,9 @@ class Reductor
 
       def emit
         if fields.size > 1
-          "emit({ #{fields.join(", ")} } , #{translated_sum_field});"
+          "emit({#{fields.join(", ")} }, #{translated_sum_field});"
         else
-          "emit( #{fields.first.translated} , #{translated_sum_field});"
+          "emit(#{fields.first.translated}, #{translated_sum_field});"
         end
       end
 

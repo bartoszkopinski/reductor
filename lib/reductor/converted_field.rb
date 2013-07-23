@@ -6,7 +6,11 @@ class Reductor
     end
 
     def translated
-      send(translation_type, field_name)
+      if translation_type.respond_to?(:call)
+        translation_type.call(field_name)
+      else
+        send(translation_type, field_name)
+      end
     end
 
     private
@@ -25,6 +29,10 @@ class Reductor
 
     def to_year(field_name)
       "this.#{field_name} ? new Date(this.#{field_name}.getFullYear()) : this.#{field_name}"
+    end
+
+    def presence(field_names)
+      [field_names].flatten.map{|e| "(this.#{e} ? true : false)" }.join(" && ")
     end
 
   end
