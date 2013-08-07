@@ -14,8 +14,8 @@ class Reductor
         @as = options[:as]
       end
 
-      def value_field_name
-        @as || 'count';
+      def as
+        @as
       end
 
       def reduce
@@ -28,11 +28,11 @@ class Reductor
 
 
       def finalize
-        %Q{
-          function(key, values) {
-            return { #{value_field_name}: values };
-          }
-        }
+        if as
+          "function(key, values) { return { #{as}: values }; }"
+        else
+          "function(key, values) { return values; }"
+        end
       end
 
     end

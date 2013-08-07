@@ -16,7 +16,11 @@ class Reductor
 
       def sum field, options = {}
         @sum_field = field
-        @sum_field_name = options[:as] || @sum_field
+        @as = options[:as]
+      end
+
+      def as
+        @as
       end
 
       def reduce
@@ -28,11 +32,11 @@ class Reductor
       end
 
       def finalize
-        %Q{
-          function(key, values) {
-            return { #{@sum_field_name}: values };
-          }
-        }
+        if as
+          "function(key, values) { return { #{as}: values }; }"
+        else
+          "function(key, values) { return values; }"
+        end
       end
 
     end
